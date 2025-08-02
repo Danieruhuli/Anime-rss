@@ -1,0 +1,37 @@
+name: Guardar HTML renderizado de Hianime
+
+on:
+  push:
+  schedule:
+    - cron: '0 * * * *'  # Cada hora a en punto
+  workflow_dispatch:
+
+jobs:
+  render-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clona el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instala dependencias
+        run: |
+          npm ci
+
+      - name: Instala Chromium para Puppeteer
+        run: npx puppeteer install
+
+      - name: Ejecuta script para renderizar HTML
+        run: node snapshot.js
+
+      - name: Genera RSS a partir del HTML
+        run: node generate-rss.js
+
+      - name: Sube HTML y RSS generados
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add simulcast.html docs/simulcast-rss.xml
+          git commit -m "Update simulcast.html y RSS [auto]" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${GIT_AUTH_TOKEN}@github.com/${{ github.repository }}
+          git push
