@@ -1,8 +1,14 @@
 const fs = require('fs');
 const { JSDOM } = require('jsdom');
 
-// Lee el HTML renderizado previamente
-const html = fs.readFileSync('simulcast-hianime.html', 'utf-8');
+// Verificar si el archivo HTML está vacío
+const htmlPath = 'simulcast-hianime.html';
+if (!fs.existsSync(htmlPath) || fs.statSync(htmlPath).size === 0) {
+  console.log('⚠️ Archivo HTML vacío o no encontrado. RSS no será generado.');
+  process.exit(0); // Finaliza sin error
+}
+
+const html = fs.readFileSync(htmlPath, 'utf-8');
 const dom = new JSDOM(html);
 const document = dom.window.document;
 
@@ -24,7 +30,7 @@ const items = Array.from(itemsDOM).map(el => {
   const pubDate = new Date().toUTCString();
 
   return {
-    title: `${seasonTitle} Episode ${episodeNumber}`,
+    title: `${seasonTitle} - Episode ${episodeNumber}`,
     link: fullLink,
     pubDate,
     description: `Episode ${episodeNumber}`,
@@ -56,5 +62,5 @@ const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 
 // Crea la carpeta docs si no existe y guarda el archivo XML
 fs.mkdirSync('docs', { recursive: true });
-fs.writeFileSync('docs/simulcast-rss.xml', rss);
-console.log('✅ RSS generado: simulcast-rss.xml');
+fs.writeFileSync('docs/hianime-rss.xml', rss);
+console.log('✅ RSS generado: docs/hianime-rss.xml');

@@ -24,8 +24,8 @@ jobs:
       - name: Ejecuta script para renderizar HTML
         run: node snapshot.js
 
-      - name: Genera RSS a partir del HTML
-        run: node generate-rss.js
+      - name: Genera RSS de Hianime
+        run: node generate-hianime-rss.js
 
       - name: Sube HTML y RSS generados
         run: |
