@@ -3,7 +3,7 @@ name: Guardar HTML renderizado de Hianime
 on:
   push:
   schedule:
-    - cron: '30 * * * *'  # Cada hora a en punto
+    - cron: '0 * * * *'  # Cada hora a en punto
   workflow_dispatch:
 
 jobs:
