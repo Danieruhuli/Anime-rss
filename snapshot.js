@@ -2,29 +2,61 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const fs = require('fs');
 
-// Activar el plugin de evasión
+// Activar evasión
 puppeteer.use(StealthPlugin());
+
+const targets = [
+  {
+    url: 'https://hianime.to/recently-updated',
+    output: 'simulcast-hianime.html',
+  },
+  {
+    url: 'https://www.wcoflix.tv/',
+    output: 'simulcast-wcoflix.html',
+  },
+  {
+    url: 'https://www.animeonegai.com/es/page/home',
+    output: 'simulcast-animeonegai.html',
+  },
+];
 
 (async () => {
   const browser = await puppeteer.launch({
-   headless: 'new',
-   args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
-  const page = await browser.newPage();
 
-  try {
-  await page.goto('https://hianime.to/recently-updated', {
-  waitUntil: 'networkidle0',
-  timeout: 120000 // espera hasta 2 minutos
-});
+  let failedCount = 0;
 
-    const content = await page.content();
-    fs.writeFileSync('simulcast.html', content);
-    console.log('✅ HTML guardado como simulcast.html');
-  } catch (error) {
-    console.error('❌ Error al cargar la página:', error);
+  for (const target of targets) {
+    const page = await browser.newPage();
+
+    try {
+      console.log(`⏳ Cargando ${target.url}...`);
+      await page.goto(target.url, {
+        waitUntil: 'networkidle0',
+        timeout: 120000,
+      });
+
+      const content = await page.content();
+      fs.writeFileSync(target.output, content);
+      console.log(`✅ Guardado: ${target.output}`);
+    } catch (err) {
+      console.error(`❌ Error en ${target.url}:`, err.message);
+      fs.writeFileSync(target.output, ''); // HTML vacío
+      failedCount++;
+    } finally {
+      await page.close();
+    }
+  }
+
+  await browser.close();
+
+  if (failedCount === targets.length) {
+    console.error('🛑 Todas las páginas fallaron. Abortando con código de error.');
     process.exit(1);
-  } finally {
-    await browser.close();
+  } else {
+    console.log('🏁 Proceso terminado. Algunas páginas pueden haber fallado.');
+    process.exit(0);
   }
 })();

@@ -2,7 +2,7 @@ const fs = require('fs');
 const { JSDOM } = require('jsdom');
 
 // Lee el HTML renderizado previamente
-const html = fs.readFileSync('simulcast.html', 'utf-8');
+const html = fs.readFileSync('simulcast-hianime.html', 'utf-8');
 const dom = new JSDOM(html);
 const document = dom.window.document;
 
