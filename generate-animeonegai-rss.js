@@ -74,7 +74,7 @@ const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <channel>
   <title>Anime Onegai</title>
   <link>${baseUrl}</link>
-  <description>Últimos novedades en Anime Onegai</description>
+  <description>Últimas novedades en Anime Onegai</description>
   <language>es</language>
   <lastBuildDate>${pubDate}</lastBuildDate>
   ${allItems.map(item => `
@@ -91,4 +91,4 @@ const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 
 fs.mkdirSync('docs', { recursive: true });
 fs.writeFileSync('docs/animeonegai-rss.xml', rss);
-console.log('✅ RSS generado con múltiples secciones y etiquetas personalizadas: docs/animeonegai-rss.xml');
+console.log('✅ RSS generado: docs/animeonegai-rss.xml');
