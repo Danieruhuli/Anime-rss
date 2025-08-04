@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node snapshot.js",
     "hianime:rss": "node generate-hianime-rss.js",
-    "wco:rss": "node generate-wcoflix-rss.js"
+    "wco:rss": "node generate-wcoflix-rss.js",
+    "animeonegai:rss": "node generate-animeonegai-rss.js"
   },
   "dependencies": {
     "puppeteer": "^21.3.8",
