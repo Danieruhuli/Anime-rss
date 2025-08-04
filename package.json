@@ -11,9 +11,10 @@
     "animeonegai:rss": "node generate-animeonegai-rss.js"
   },
   "dependencies": {
+    "jsdom": "24.0.0",
+    "node-fetch": "^3.3.2",
     "puppeteer": "^21.3.8",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.1",
-    "jsdom": "24.0.0"
+    "puppeteer-extra-plugin-stealth": "^2.11.1"
   }
 }
