@@ -6,17 +6,33 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 
 const targets = [
+///////Hianime y Anime Onegai han cerrado, se coloca en comentario
+/*  
   {
     url: 'https://hianime.to/recently-updated',
     output: 'simulcast-hianime.html',
   },
   {
+    url: 'https://www.animeonegai.com/es/page/home',
+    output: 'simulcast-animeonegai.html',
+  },
+*/
+///////////////////////////////////////////////////////////////////  
+  {
     url: 'https://www.wcoflix.tv/',
     output: 'simulcast-wcoflix.html',
   },
   {
-    url: 'https://www.animeonegai.com/es/page/home',
-    output: 'simulcast-animeonegai.html',
+    url: 'https://www.miruro.tv/',
+    output: 'simulcast-miruro.html',
+  },
+  {
+    url: 'https://animekai.to/home',
+    output: 'simulcast-animekai.html',
+  },
+  {
+    url: 'https://kaa.lt/',
+    output: 'simulcast-kaa.html',
   },
 ];
 
