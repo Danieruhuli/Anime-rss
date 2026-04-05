@@ -22,17 +22,13 @@ const targets = [
     url: 'https://www.wcoflix.tv/',
     output: 'simulcast-wcoflix.html',
   },
-  {
-    url: 'https://www.miruro.tv/',
-    output: 'simulcast-miruro.html',
-  },
-  {
-    url: 'https://animekai.to/home',
-    output: 'simulcast-animekai.html',
-  },
-  {
+    {
     url: 'https://kaa.lt/',
     output: 'simulcast-kaa.html',
+  },
+    {
+    url: 'https://jkanime.net/',
+    output: 'simulcast-jkanime.html',
   },
 ];
 

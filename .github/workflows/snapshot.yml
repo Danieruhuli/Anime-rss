@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add simulcast-wcoflix.html simulcast-miruro.html simulcast-animekai.html simulcast-kaa.html docs/wco-rss.xml 
+          git add simulcast-wcoflix.html simulcast-kaa.html simulcast-jkanime.html docs/wco-rss.xml 
           git commit -m "Update simulcast.html y RSS [auto]" || echo "No changes to commit"
           git remote set-url origin https://x-access-token:${GIT_AUTH_TOKEN}@github.com/${{ github.repository }}
           git push
