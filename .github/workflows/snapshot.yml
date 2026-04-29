@@ -24,20 +24,30 @@ jobs:
       - name: Ejecuta script para renderizar HTML
         run: node snapshot.js
 
-      - name: Genera RSS de Hianime
-        run: node generate-hianime-rss.js
+      # Fuentes obsoletas: HiAnime y AnimeOnegai
+      # Las siguientes tareas están comentadas porque las páginas fuente
+      # (HiAnime y AnimeOnegai) dejaron de estar disponibles.
+      # Se mantienen aquí como referencia histórica y para posible reactivación
+      # en caso de que vuelvan a funcionar.
+      #
+      # - name: Genera RSS de Hianime
+      #   run: node generate-hianime-rss.js
+      #
+      # - name: Genera RSS de AnimeOnegai
+      #   run: node generate-animeonegai-rss.js
 
+      # Generadores activos
       - name: Genera RSS de WCO
         run: node generate-wcoflix-rss.js
 
-      - name: Genera RSS de AnimeOnegai
-        run: node generate-animeonegai-rss.js
+      - name: Genera RSS de JkAnime
+        run: node generate-jkanime-rss.js
 
       - name: Sube HTML y RSS generados
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add simulcast-wcoflix.html simulcast-kaa.html simulcast-jkanime.html docs/wco-rss.xml 
+          git add simulcast-wcoflix.html simulcast-kaa.html simulcast-jkanime.html docs/wco-rss.xml docs/jkanime-rss.xml
           git commit -m "Update simulcast.html y RSS [auto]" || echo "No changes to commit"
           git remote set-url origin https://x-access-token:${GIT_AUTH_TOKEN}@github.com/${{ github.repository }}
           git push
