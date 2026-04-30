@@ -10,6 +10,7 @@ Objetivo: facilitar la obtención de los episodios recientes en un único reposi
 |---|---:|:---:|
 | JkAnime | `https://raw.githubusercontent.com/Danieruhuli/anime-rss/main/docs/jkanime-rss.xml` | ✅ Activa |
 | WCO Flix | `https://raw.githubusercontent.com/Danieruhuli/anime-rss/main/docs/wco-rss.xml` | ✅ Activa |
+| KickAssAnime | `https://raw.githubusercontent.com/Danieruhuli/anime-rss/main/docs/kaa-rss.xml` | ✅ Activa |
 | HiAnime | `https://raw.githubusercontent.com/Danieruhuli/anime-rss/main/docs/hianime-rss.xml` | ❌ Obsoleta (página no disponible) |
 | AnimeOnegai | `https://raw.githubusercontent.com/Danieruhuli/anime-rss/main/docs/animeonegai-rss.xml` | ❌ Obsoleta (página no disponible) |
 
