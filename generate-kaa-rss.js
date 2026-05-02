@@ -18,33 +18,62 @@ const document = dom.window.document;
 // ============================================================
 const posterMap = {};
 
-// Buscar todos los patrones poster:{hq:"xxx-hq"} en el HTML
-const posterMatches = html.match(/poster:\{[^}]+hq:"([^"]+)-hq"[^}]*\}/g) || [];
-const slugMatches = html.match(/slug:"([^"]+)"/g) || [];
+// Buscar primero en los datos de la serie (formato: "slug-codigo-sm","slug-codigo-hq",...)
+// Este patrón tiene el poster correcto (ej: "ganbare-nakamura-kun-20f3-hq")
+// El patrón busca: "algo-codigo-hq" donde "algo" puede tener guiones y "codigo" es de 4 hex chars
+const seriePosterMatches = html.match(/"([a-z0-9-]+-[a-f0-9]{4}-hq)"/g) || [];
 
-// Crear mapa: slug completo -> poster ID (sin -hq)
-posterMatches.forEach(match => {
-  const hqMatch = match.match(/hq:"([^"]+)-hq"/);
+// Crear mapa desde los datos de la serie
+seriePosterMatches.forEach(match => {
+  const hqMatch = match.match(/"([a-z0-9-]+-[a-f0-9]{4}-hq)"/);
   if (hqMatch) {
-    const posterId = hqMatch[1]; // ej: "ganbare-nakamura-kun-20f3"
-    // Guardar el código final del poster
+    const posterId = hqMatch[1].replace('-hq', ''); // ej: "ganbare-nakamura-kun-20f3" (sin -hq)
     const parts = posterId.split('-');
     const code = parts[parts.length - 1];
     const baseName = parts.slice(0, -1).join('-');
     
-    // Guardar en el mapa: nombre base -> código del poster
-    if (baseName && code) {
-      posterMap[baseName] = code;
+    // Guardar el ID completo del poster (no solo el código)
+    // Solo guardar si no existe ya (evitar duplicados)
+    if (baseName && code && !posterMap[baseName]) {
+      posterMap[baseName] = posterId;
     }
   }
 });
 
-// También extraer slugs para tener referencia
-const slugList = [];
-slugMatches.forEach(match => {
-  const slugMatch = match.match(/slug:"([^"]+)"/);
-  if (slugMatch) {
-    slugList.push(slugMatch[1]);
+console.log(`📸 Se mapearon ${Object.keys(posterMap).length} posters`);
+
+// Crear mapa desde los datos de la serie
+seriePosterMatches.forEach(match => {
+  const hqMatch = match.match(/"([a-z0-9-]+-[a-f0-9]{4}-hq)"/);
+  if (hqMatch) {
+    const posterId = hqMatch[1].replace('-hq', ''); // ej: "ganbare-nakamura-kun-20f3" (sin -hq)
+    const parts = posterId.split('-');
+    const code = parts[parts.length - 1];
+    const baseName = parts.slice(0, -1).join('-');
+    
+    // Guardar el ID completo del poster (no solo el código)
+    // Solo guardar si no existe ya (evitar duplicados)
+    if (baseName && code && !posterMap[baseName]) {
+      posterMap[baseName] = posterId;
+    }
+  }
+});
+
+// Buscar todos los patrones poster:{hq:"xxx-hq"} en el HTML (episodios)
+const posterMatches = html.match(/poster:\{[^}]+hq:"([^"]+)-hq"[^}]*\}/g) || [];
+
+// Completar con posters de episodios si no están en el mapa
+posterMatches.forEach(match => {
+  const hqMatch = match.match(/hq:"([^"]+)-hq"/);
+  if (hqMatch) {
+    const posterId = hqMatch[1];
+    const parts = posterId.split('-');
+    const code = parts[parts.length - 1];
+    const baseName = parts.slice(0, -1).join('-');
+    
+    if (baseName && code && !posterMap[baseName]) {
+      posterMap[baseName] = posterId;
+    }
   }
 });
 
@@ -85,9 +114,8 @@ const items = Array.from(itemsDOM).map((el) => {
   const linkCode = slugParts[slugParts.length - 1]; // "1d6e"
   const baseName = slugParts.slice(0, -1).join('-'); // "ganbare-nakamura-kun"
   
-  // Buscar el código correcto del poster en el mapa
-  const posterCode = posterMap[baseName] || linkCode;
-  const posterId = `${baseName}-${posterCode}`;
+  // Buscar el poster en el mapa (ya contiene el ID completo)
+  const posterId = posterMap[baseName] || `${baseName}-${linkCode}`;
   
   // Image: construir URL de imagen
   const image = `https://kaa.lt/image/poster/${posterId}-hq.webp`;
